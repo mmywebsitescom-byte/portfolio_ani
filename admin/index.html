@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Pabitra Lenka Portfolio</title>
+  <link rel="icon" href="../favicon.ico" />
+  <link rel="stylesheet" href="admin.css" />
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- AUTH PASSCODE GATE MODAL -->
+  <div class="modal-overlay" id="authGateOverlay">
+    <div class="auth-box">
+      <div class="sidebar__logo-badge">PL</div>
+      <h2>Portfolio Admin</h2>
+      <p>Enter the admin passcode to manage public page data.</p>
+      <form id="authForm" onsubmit="return false;">
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <input type="password" id="authPasscodeInput" placeholder="Enter Passcode (default: admin123)" required autocomplete="current-password" autofocus />
+        </div>
+        <button type="submit" class="btn btn-primary" id="btnUnlock" style="width: 100%; justify-content: center;">
+          Unlock Dashboard
+        </button>
+        <p class="form-hint" style="margin-top: 1rem;">Default password is <strong>admin123</strong>. You can change it anytime in Database & Settings.</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar__header">
+      <a href="../" class="sidebar__brand">
+        <div class="sidebar__logo-badge">PL</div>
+        <div class="sidebar__brand-text">
+          <h1>Pabitra Lenka</h1>
+          <p>Portfolio Admin</p>
+        </div>
+      </a>
+    </div>
+
+    <nav class="sidebar__nav">
+      <div class="nav-label">Core Content</div>
+      <button class="nav-item active" data-tab="overview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        <span>Overview</span>
+      </button>
+
+      <button class="nav-item" data-tab="profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span>Profile & Hero</span>
+      </button>
+
+      <div class="nav-label">Portfolio Sections</div>
+      <button class="nav-item" data-tab="web">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+        <span>Web Developer</span>
+      </button>
+
+      <button class="nav-item" data-tab="ai">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        <span>AI / ML Engineer</span>
+      </button>
+
+      <button class="nav-item" data-tab="python">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+        <span>Python Developer</span>
+      </button>
+
+      <button class="nav-item" data-tab="photos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+        <span>Photography</span>
+      </button>
+
+      <button class="nav-item" data-tab="friends">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>Collaborators</span>
+      </button>
+
+      <button class="nav-item" data-tab="tech">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        <span>Tech Stack</span>
+      </button>
+
+      <div class="nav-label">System</div>
+      <button class="nav-item" data-tab="supabase">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+        <span>Supabase Database</span>
+      </button>
+    </nav>
+
+    <div class="sidebar__footer">
+      <a href="../" target="_blank" class="btn-preview">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        <span>View Live Site</span>
+      </a>
+      <div class="lock-info">
+        <span>Admin Active</span>
+        <button class="btn-lock" id="btnLockSession">Lock</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEWPORT -->
+  <main class="main">
+
+    <!-- TAB 1: OVERVIEW -->
+    <section class="tab-pane active" id="pane-overview">
+      <div class="page-header">
+        <div class="page-title">
+          <h2>Dashboard Overview</h2>
+          <p>Real-time content summary and database status.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary btn-sm" id="btnRefreshStats">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            Refresh
+          </button>
+          <a href="../" target="_blank" class="btn btn-primary btn-sm">Preview Website</a>
+        </div>
+      </div>
+
+      <!-- KPI Grid -->
+      <div class="grid-cards" style="margin-bottom: 2rem;">
+        <div class="card">
+          <div class="card__header">
+            <span class="card__badge">Web Dev</span>
+            <span id="statWebCount" style="font-size: 1.5rem; font-weight: 700;">7</span>
+          </div>
+          <h3 class="card__title">Web Projects</h3>
+          <p class="card__desc">Interactive websites and frontend applications.</p>
+          <button class="btn btn-secondary btn-sm" onclick="switchTab('web')">Manage Projects &rarr;</button>
+        </div>
+
+        <div class="card">
+          <div class="card__header">
+            <span class="card__badge">AI / ML</span>
+            <span id="statAICount" style="font-size: 1.5rem; font-weight: 700;">4</span>
+          </div>
+          <h3 class="card__title">AI/ML Apps</h3>
+          <p class="card__desc">Machine learning, forecasting and finance apps.</p>
+          <button class="btn btn-secondary btn-sm" onclick="switchTab('ai')">Manage AI Apps &rarr;</button>
+        </div>
+
+        <div class="card">
+          <div class="card__header">
+            <span class="card__badge">Python</span>
+            <span id="statPyCount" style="font-size: 1.5rem; font-weight: 700;">5</span>
+          </div>
+          <h3 class="card__title">Python Projects</h3>
+          <p class="card__desc">Backends, high-concurrency microservices and automation.</p>
+          <button class="btn btn-secondary btn-sm" onclick="switchTab('python')">Manage Python &rarr;</button>
+        </div>
+
+        <div class="card">
+          <div class="card__header">
+            <span class="card__badge">Photos</span>
+            <span id="statPhotoCount" style="font-size: 1.5rem; font-weight: 700;">28</span>
+          </div>
+          <h3 class="card__title">Photo Gallery</h3>
+          <p class="card__desc">Concert, nature, sports, and architectural photography.</p>
+          <button class="btn btn-secondary btn-sm" onclick="switchTab('photos')">Manage Photos &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Database Status Card -->
+      <div class="form-section">
+        <h3>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+          Database Connection
+        </h3>
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div id="overviewStatusPill" class="status-pill">
+              <span class="status-dot local"></span>
+              <span id="overviewStatusText">Local Storage Mode (Supabase Not Linked)</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--fg-muted); margin-top: 0.5rem;" id="overviewStatusDesc">
+              Changes you save in this panel are actively saved in your browser's persistent storage. Link a Supabase project to enable cloud database sync across devices!
+            </p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="switchTab('supabase')">Configure Supabase &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: PROFILE & HERO -->
+    <section class="tab-pane" id="pane-profile" style="display: none;">
+      <div class="page-header">
+        <div class="page-title">
+          <h2>Profile & Hero Section</h2>
+          <p>Update personal information, social links, headline and bio.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" id="btnSaveProfile">Save Profile Changes</button>
+        </div>
+      </div>
+
+      <form id="formProfile">
+        <div class="form-section">
+          <h3>Personal Details</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="profName">Display Name</label>
+              <input type="text" id="profName" />
+            </div>
+            <div class="form-group">
+              <label for="profRole">Primary Role / Title</label>
+              <input type="text" id="profRole" />
+            </div>
+            <div class="form-group">
+              <label for="profGreeting">Hero Greeting</label>
+              <input type="text" id="profGreeting" placeholder="Hi, I'm Pabitra." />
+            </div>
+            <div class="form-group">
+              <label for="profStatus">Availability Status</label>
+              <input type="text" id="profStatus" placeholder="Available for new projects" />
+            </div>
+            <div class="form-group full">
+              <label for="profBio">Hero Biography (About paragraph)</label>
+              <textarea id="profBio" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Contact & Social Links</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="profEmail">Contact Email</label>
+              <input type="email" id="profEmail" />
+            </div>
+            <div class="form-group">
+              <label for="profLocation">Location</label>
+              <input type="text" id="profLocation" />
+            </div>
+            <div class="form-group">
+              <label for="profGithub">GitHub Profile URL</label>
+              <input type="url" id="profGithub" />
+            </div>
+            <div class="form-group">
+              <label for="profLinkedin">LinkedIn Profile URL</label>
+              <input type="url" id="profLinkedin" />
+            </div>
+            <div class="form-group">
+              <label for="profInstagram">Instagram URL</label>
+              <input type="url" id="profInstagram" />
+            </div>
+            <div class="form-group">
+              <label for="profTwitter">X (Twitter) Profile URL</label>
+              <input type="url" id="profTwitter" />
+            </div>
+            <div class="form-group full">
+              <label for="profResume">Resume Document Path / URL</label>
+              <input type="text" id="profResume" placeholder="resume.pdf" />
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- TAB 3: WEB DEVELOPER PROJECTS -->
+    <section class="tab-pane" id="pane-web" style="display: none;">
+      <div class="page-header">
+        <div class="page-title">
+          <h2>Web Developer Projects</h2>
+          <p>Manage projects displayed on the <code>/web-developer/</code> page.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" id="btnAddWebProject">+ Add Web Project</button>
+        </div>
+      </div>
+      <div class="grid-cards" id="listWebProjects"></div>
+    </section>
+
+    <!-- TAB 4: AI/ML ENGINEER PROJECTS -->
+    <section class="tab-pane" id="pane-ai" style="display: none;">
+      <div class="page-header">
+        <div class="page-title">
+          <h2>AI / ML Engineer Apps</h2>
+          <p>Manage applications displayed on the <code>/ai-ml-engineer/</code> page.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" id="btnAddAIProject">+ Add AI Project</button>
+        </div>
+      </div>
+      <div class="grid-cards" id="listAIProjects"></div>
+    </section>
+
+    <!-- TAB 5: PYTHON DEVELOPER PROJECTS -->
+    <section class="tab-pane" id="pane-python" style="display: none;">
+      <div class="page-header">
+        <div class="page-title">
+          <h2>Python Developer Projects</h2>
+          <p>Manage projects displayed on the <code>/python-developer/</code> page.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" id="btnAddPythonProject">+ Add Python Project</button>
+        </div>
+      </div>
+      <div class="grid-cards" id="listPythonProjects"></div>
+    </section>
+
+    <!-- TAB 6: PHOTOGRAPHY -->
+    <section class="tab-pane" id="pane-photos" style="display: none;">
+      <div class="page-header">
+        <div class="page-title">
+          <h2>Photography Gallery</h2>
+          <p>Manage images displayed on the <code>/photographer/</code> page.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" id="btnAddPhoto">+ Add New Photo</button>
+        </div>
+      </div>
+      <div class="grid-cards" id="listPhotos"></div>
+    </section>
+
+    <!-- TAB 7: COLLABORATORS -->
+    <section class="tab-pane" id="pane-friends" style="display: none;">
+      <div class="page-header">
+        <div class="page-title">
+          <h2>Collaborators ("Better Together")</h2>
+          <p>Manage peers and teammates shown on the homepage.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" id="btnAddFriend">+ Add Collaborator</button>
+        </div>
+      </div>
+      <div class="grid-cards" id="listFriends"></div>
+    </section>
+
+    <!-- TAB 8: TECH STACK -->
+    <section class="tab-pane" id="pane-tech" style="display: none;">
+      <div class="page-header">
+        <div class="page-title">
+          <h2>Tech Stack & Skills</h2>
+          <p>Manage skills displayed in the animated Logo Loop ticker.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" id="btnAddTech">+ Add Tech Skill</button>
+        </div>
+      </div>
+      <div class="grid-cards" id="listTech"></div>
+    </section>
+
+    <!-- TAB 9: SUPABASE DATABASE SETTINGS -->
+    <section class="tab-pane" id="pane-supabase" style="display: none;">
+      <div class="page-header">
+        <div class="page-title">
+          <h2>Supabase Cloud Database</h2>
+          <p>Connect your portfolio to a free Supabase PostgreSQL database for cross-device sync.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary btn-sm" id="btnTestSupabase">Test Connection</button>
+          <button class="btn btn-primary btn-sm" id="btnSaveSupabase">Save Config</button>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>API Credentials</h3>
+        <p style="font-size: 0.85rem; color: var(--fg-muted); margin-bottom: 1.25rem;">
+          Get your credentials from your Supabase Dashboard &rarr; <strong>Project Settings &rarr; API</strong>.
+        </p>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label for="supabaseUrl">Project URL</label>
+            <input type="url" id="supabaseUrl" placeholder="https://your-project-id.supabase.co" />
+          </div>
+          <div class="form-group full">
+            <label for="supabaseKey">Anon Public Key</label>
+            <input type="password" id="supabaseKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." />
+          </div>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button class="btn btn-primary" id="btnSyncToSupabase">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            Push All Local Data to Supabase
+          </button>
+          <button class="btn btn-secondary" id="btnPullFromSupabase">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Pull Data from Supabase
+          </button>
+        </div>
+      </div>
+
+      <!-- SQL Script Viewer -->
+      <div class="form-section">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+          <h3>Supabase SQL Schema Script</h3>
+          <button class="btn btn-secondary btn-sm" id="btnCopySql">Copy SQL Script</button>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--fg-muted);">
+          Run this SQL script in your Supabase <strong>SQL Editor</strong> to create the <code>portfolio_store</code> table, Row Level Security rules, and pre-load all initial data.
+        </p>
+        <pre class="code-box" id="sqlBox">Loading SQL schema script...</pre>
+      </div>
+
+      <!-- Security / Passcode Settings -->
+      <div class="form-section">
+        <h3>Admin Access Passcode</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="inputNewPasscode">Update Admin Passcode</label>
+            <input type="password" id="inputNewPasscode" placeholder="Enter new passcode (min 4 chars)" />
+          </div>
+          <div class="form-group" style="align-self: flex-end;">
+            <button class="btn btn-secondary" id="btnUpdatePasscode">Update Passcode</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Factory Reset -->
+      <div class="form-section" style="border-color: rgba(229, 62, 62, 0.3);">
+        <h3 style="color: var(--danger);">Reset Data to Factory Defaults</h3>
+        <p style="font-size: 0.85rem; color: var(--fg-muted); margin-bottom: 1rem;">
+          Clears all customized local storage data and reverts every page back to the original cloned state.
+        </p>
+        <button class="btn btn-danger btn-sm" id="btnResetDefaults">Reset All Changes to Default</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: ADD / EDIT PROJECT (DYNAMIC REUSABLE) -->
+  <div class="modal-overlay" id="projectModalOverlay">
+    <div class="modal">
+      <div class="modal__header">
+        <h3 id="projectModalTitle">Edit Item</h3>
+        <button class="btn-icon" id="btnCloseProjectModal">&times;</button>
+      </div>
+      <div class="modal__body">
+        <form id="projectModalForm" class="form-grid">
+          <!-- Dynamic inputs injected by admin.js -->
+        </form>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn-secondary" id="btnCancelProjectModal">Cancel</button>
+        <button class="btn btn-primary" id="btnSaveProjectModal">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST ALERTS CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Main Admin Logic -->
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

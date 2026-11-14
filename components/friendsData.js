@@ -3,7 +3,7 @@
  * Pabitra can customize or update his friends' profiles here.
  */
 
-export const friendsList = [
+export let friendsList = [
   {
     name: "Ronali Jena",
     role: "Full-Stack Developer",
@@ -87,5 +87,10 @@ export const friendsList = [
     }
   }
 ];
+
+try {
+  const _savedFriends = localStorage.getItem('portfolio_data_friends');
+  if (_savedFriends) friendsList = JSON.parse(_savedFriends);
+} catch (e) {}
 
 export default friendsList;

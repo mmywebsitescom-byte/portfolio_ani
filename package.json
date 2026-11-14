@@ -9,6 +9,9 @@
     "deploy:prod": "vercel --prod",
     "serve": "npx serve ."
   },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.1"
+  },
   "devDependencies": {
     "vercel": "^65.16.0"
   }

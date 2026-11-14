@@ -1,4 +1,4 @@
-export const techLogos = [
+export let techLogos = [
   {
     title: "Python",
     href: "https://www.python.org",
@@ -84,4 +84,24 @@ export const techLogos = [
     node: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-.828-.242-.242-.354-.515-.354-.863 0-.486.326-.921 1.018-.921.603 0 1.05.242 1.439.691.303.351.487.69.487.69l1.966-1.285s-.586-.889-1.272-1.396c-.687-.506-1.597-.738-2.613-.738-2.458 0-4.043 1.523-4.043 3.682 0 1.229.497 2.189 1.464 2.873.967.684 2.378 1.037 3.332 1.488.954.45 1.341.879 1.341 1.517 0 .637-.585 1.157-1.576 1.157-1.203 0-1.892-.619-2.417-1.423-.195-.302-.341-.58-.341-.58l-2.062 1.25s.449.924 1.295 1.62c.846.696 2.06 1.026 3.513 1.026 2.668 0 4.316-1.577 4.316-3.864 0-.472-.09-.904-.265-1.268zm-8.868.966c0 1.139-.286 1.956-.856 2.45-.57.494-1.429.743-2.576.743-1.096 0-1.867-.202-2.311-.479-.444-.277-.734-.633-.734-.633l1.196-1.898s.347.29.689.479c.342.189.782.284 1.32.284.509 0 .867-.113 1.074-.339.207-.226.31-.607.31-1.144V8.04h2.888v11.202z"/></svg>`
   }
 ];
+
+try {
+  const _savedTech = localStorage.getItem('portfolio_data_tech');
+  if (_savedTech) {
+    const parsed = JSON.parse(_savedTech);
+    // Merge custom titles & hrefs if needed
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      techLogos = parsed.map(item => {
+        const found = techLogos.find(t => t.title.toLowerCase() === item.title.toLowerCase());
+        return {
+          title: item.title,
+          href: item.href || (found ? found.href : '#'),
+          hoverColor: item.hoverColor || (found ? found.hoverColor : '#C4B0B0'),
+          node: found ? found.node : `<span style="font-weight:700;font-size:0.95rem;color:${item.hoverColor || '#C4B0B0'}">${item.title}</span>`
+        };
+      });
+    }
+  }
+} catch (e) {}
+
 

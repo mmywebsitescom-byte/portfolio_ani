@@ -1,0 +1,892 @@
+/**
+ * Pabitra Lenka Portfolio - Dynamic Data Store
+ * Supports Dual Mode:
+ *   1. Supabase Cloud Database (when SUPABASE_URL and SUPABASE_ANON_KEY are configured)
+ *   2. LocalStorage Fallback (works immediately out of the box with zero setup)
+ */
+
+export const DEFAULT_DATA = {
+  profile: {
+  "name": "Pabitra Lenka",
+  "role": "Full-Stack Developer, AI/ML & Python Developer",
+  "greeting": "Hi, I'm Pabitra.",
+  "subgreeting": "I am a",
+  "headline": "Hi, I'm Pabitra. I am a web developer, AI/ML engineer, python developer, data scientist and photographer.",
+  "bio": "Freelance Web Developer, AI/ML Engineer, Python Developer, Data Scientist and Photographer working remotely with clients worldwide. Replies within 5 hours.",
+  "status": "Available for new projects",
+  "email": "pabitralenka07@gmail.com",
+  "location": "Bhubaneswar, India / Remote Worldwide",
+  "github": "https://github.com/pabitralenka07",
+  "linkedin": "https://www.linkedin.com/in/pabitra-lenka-777423324/",
+  "instagram": "https://www.instagram.com/__lenka_babu._?igsh=MXZyODBoenlvOHZ1dQ==",
+  "twitter": "https://x.com/PabitraLenka777",
+  "resumeUrl": "resume.pdf"
+},
+  web_projects: [
+  {
+    "kind": "Website build",
+    "title": "Sundown Studio",
+    "sub": "Studio website",
+    "desc": "An editorial website for a multi-disciplinary studio that creates spaces and experiences: oversized type, a soft red glow that follows the story and a project list that reveals imagery on hover.",
+    "tags": [
+      "Design & build",
+      "Motion",
+      "Hover interactions"
+    ],
+    "video": "project-2.mp4",
+    "ar": "1280 / 732",
+    "poster": "project-2.webp",
+    "bg": "#EBE7DE"
+  },
+  {
+    "kind": "Website build",
+    "title": "Personal portfolio",
+    "sub": "Product designer portfolio",
+    "desc": "A dark, type-led portfolio with a large display headline, a project list with hover previews and an about section.",
+    "tags": [
+      "Design & build",
+      "Typography",
+      "Hover previews"
+    ],
+    "video": "project-4.mp4",
+    "ar": "1280 / 730",
+    "poster": "project-4.webp",
+    "bg": "#000"
+  },
+  {
+    "kind": "Quicko \u00b7 Live",
+    "title": "P&L Page for Zerodha",
+    "sub": "Broker landing page \u00b7 pnl.page",
+    "desc": "Landing page that helps Zerodha users connect their demat account, track profit & loss, download tax-ready reports and share verified P&L with their tax advisor.",
+    "tags": [
+      "Landing page",
+      "Responsive build",
+      "SEO"
+    ],
+    "url": "https://pnl.page/brokers/zerodha",
+    "shot": "1-zerodha.webp"
+  },
+  {
+    "kind": "Quicko \u00b7 Live",
+    "title": "Capital Gains Tax Calculator",
+    "sub": "Interactive tool \u00b7 quicko.com",
+    "desc": "Calculates LTCG and STCG on shares, property, mutual funds and crypto: enter the buy price and sell date to get capital gains tax and indexed cost instantly.",
+    "tags": [
+      "Calculator",
+      "Interactive UI",
+      "SEO"
+    ],
+    "url": "https://quicko.com/tools/capital-gains-tax-calculator",
+    "shot": "4-quicko-cg.webp"
+  },
+  {
+    "kind": "Sandbox \u00b7 Live",
+    "title": "Tax API Cost Calculator",
+    "sub": "Pricing tool \u00b7 sandbox.co.in",
+    "desc": "Estimates the cost of tax APIs for KYC, Income Tax, TDS and GST: choose a plan, add monthly usage and download a pricing estimate.",
+    "tags": [
+      "Pricing calculator",
+      "Interactive UI",
+      "Embedded tool"
+    ],
+    "url": "https://sandbox.co.in/tools/cost-calculator",
+    "shot": "5-sandbox-cost.webp"
+  },
+  {
+    "kind": "Quicko \u00b7 Live",
+    "title": "Tax P&L Report, explained",
+    "sub": "Long-form guide \u00b7 pnl.page",
+    "desc": "A guide to every sheet of the Tax P&L report: capital gains on shares, mutual funds and real estate, intraday and F&O income, dividends and loss adjustment, with tables and FAQs.",
+    "tags": [
+      "Content page",
+      "Data tables",
+      "SEO"
+    ],
+    "url": "https://pnl.page/guides/understand-tax-pnl-report",
+    "shot": "2-tax-pnl.webp"
+  },
+  {
+    "kind": "Quicko \u00b7 Live",
+    "title": "Capital Gains Statement, explained",
+    "sub": "Long-form guide \u00b7 pnl.page",
+    "desc": "Walks Indian investors through each section of the Capital Gains Statement: STCG and LTCG on equity shares, mutual funds and real estate.",
+    "tags": [
+      "Content page",
+      "Data tables",
+      "SEO"
+    ],
+    "url": "https://pnl.page/guides/understand-capital-gains-statement",
+    "shot": "3-capital-gains.webp"
+  }
+],
+  ai_projects: [
+  {
+    "kind": "iOS app \u00b7 Finance",
+    "title": "Expense Tracker",
+    "sub": "Personal finance, organised into books",
+    "desc": "Spending is grouped into expense books such as Personal, Travel and Business, each with its own budget. Add income or an expense in a couple of taps, see the balance, spend and budget used at a glance, and search across every entry.",
+    "tags": [
+      "Budgets",
+      "Expense books",
+      "Shortcuts & Back Tap"
+    ],
+    "video": "app-expense.mp4",
+    "poster": "app-expense.webp",
+    "icon": "icon-expense.webp",
+    "note": "Screen recording on iPhone",
+    "lqip": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAABQBQCdASoWADAAPrFOoEunJCMhqqgA4BYJaQAAPY/9OjphkIk8XGYA6eEFf3dAe9tN3gAA/varJVrewwzMIzTFLawEO29Fx1JsHinvtEM2zUFTPr13RVQd9uhJzNhx6bwOr+5hOwzYEeeMEGNNChwNt7zrkEgAAAA="
+  },
+  {
+    "kind": "iOS app \u00b7 Privacy",
+    "title": "Secret Vault",
+    "sub": "A photo vault disguised as a calculator",
+    "desc": "It looks and works like an ordinary calculator. Type your secret equation and double-tap % to open a private vault: photos you import are hidden there and can be removed from your photo library.",
+    "tags": [
+      "Privacy",
+      "Equation passcode",
+      "Photos access"
+    ],
+    "video": "app-vault.mp4",
+    "poster": "app-vault.webp",
+    "icon": "icon-vault.webp",
+    "note": "Recorded on iPhone with sample photos",
+    "lqip": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAwBgCdASoWADAAPpVClkmlpCIhOrzIALASiWkA0YAs2W94CsvMnPEjrZH9/8puNKKooDEk+IeuVpgAAP7y2dGMKDtWIkcS87pXM5c73fkTCwUF+DRPBtVySJ2nAkgXYpkqGTouykU4hp5cR55AAA=="
+  },
+  {
+    "kind": "iOS game \u00b7 Arcade",
+    "title": "Brick Breaker",
+    "sub": "Arcade game with pixel-art levels",
+    "desc": "A fast arcade brick breaker: pixel-art levels, multi-ball power-ups that flood the screen, combos and a live score, with a pause menu and level-by-level progression.",
+    "tags": [
+      "Game design",
+      "Power-ups",
+      "Level design"
+    ],
+    "video": "app-brick.mp4",
+    "poster": "app-brick.webp",
+    "icon": "icon-brick.webp",
+    "note": "Gameplay recorded on iPhone",
+    "lqip": "data:image/webp;base64,UklGRrwAAABXRUJQVlA4ILAAAAAwBgCdASoWADAAPrFGnEmnI6KhNVQIAOAWCWQAx+Q5X7Fb2+drW7FLsX3d1xUlIStpj0XKMRUoP52gAP78ptUdXrARGOtskF8MifbUiH/I2pV9htfUcRcLEZsUP3eAJrueLZGNJKnWpRjMHdgv1VjyOxdpHawEbcckCq9I27rno3Us0eHZpDW7GUyMBuEKNr8UHt6C+GiJtKWqjfSRTnZKBO1LxxDHHMli2UNE0O2QAA=="
+  },
+  {
+    "kind": "iOS app \u00b7 Utility",
+    "title": "Dice",
+    "sub": "A colourful dice roller",
+    "desc": "Roll several dice at once: each die fills its own block of colour and the total updates instantly, so a board-game night needs nothing but a phone.",
+    "tags": [
+      "Utility",
+      "Minimal UI",
+      "Tap to roll"
+    ],
+    "video": "app-dice.mp4",
+    "poster": "app-dice.webp",
+    "icon": "icon-dice.webp",
+    "note": "Screen recording on iPhone",
+    "lqip": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAACQBACdASoWADAAPqlGnkmmJCMhMAqowBUJYgCDMfkgGEg4+mAlEH6d3GNpc0AA/rhzRmSQDP+chJNr/d1jZAbXbk4ynfkvNYiJnwJ5T43ypu3InS8X7SMq5QkGluq3yOIvkG7PRYsaKUYAAAA="
+  }
+],
+  python_projects: [
+  {
+    "kind": "FastAPI & AsyncPG",
+    "title": "Cliq Core API",
+    "sub": "Affiliate tracking \u00b7 high-concurrency microservice",
+    "desc": "A high-throughput backend handling millions of conversion webhooks and click tracking events. Features asynchronous ledger calculations, real-time fraud mitigation, and multi-tenant isolation built with FastAPI, Redis, and PostgreSQL.",
+    "tags": [
+      "FastAPI",
+      "PostgreSQL",
+      "Redis & Celery",
+      "Docker"
+    ],
+    "video": "ux-cliq.mp4",
+    "ar": "1280 / 800",
+    "poster": "ux-cliq.webp",
+    "bg": "#fff",
+    "fit": "cover",
+    "note": "Production telemetry running across distributed multi-tenant nodes"
+  },
+  {
+    "kind": "Django & GraphQL",
+    "title": "Prime Engine",
+    "sub": "Distributed booking engine \u00b7 transactional backend",
+    "desc": "Scalable reservation backend handling room availability searches, distributed atomic room locks via Redis, Stripe payment webhooks, and automated PDF invoice generation with Celery queues.",
+    "tags": [
+      "Django",
+      "GraphQL",
+      "Redis Locks",
+      "Celery"
+    ],
+    "video": "ux-1.mp4",
+    "ar": "1280 / 800",
+    "poster": "ux-1.webp",
+    "bg": "#000",
+    "fit": "cover",
+    "note": "Interactive reservation pipeline and GraphQL explorer"
+  },
+  {
+    "kind": "AsyncIO & RabbitMQ",
+    "title": "WeBuild Queue",
+    "sub": "AI task orchestration \u00b7 event-driven pipeline",
+    "desc": "Distributed event-driven worker framework orchestrating asynchronous LLM inference, dynamic prompt pipelines, streaming Server-Sent Events (SSE), and fault-tolerant retry workflows.",
+    "tags": [
+      "Python AsyncIO",
+      "RabbitMQ",
+      "SSE Streaming",
+      "Pytest"
+    ],
+    "video": "ux-2.mp4",
+    "ar": "1280 / 800",
+    "poster": "ux-2.webp",
+    "bg": "#12082a",
+    "fit": "cover",
+    "note": "Real-time worker daemon and asynchronous event queues"
+  },
+  {
+    "kind": "Scrapy & Playwright",
+    "title": "Jordan Scraper",
+    "sub": "Automated inventory crawler & price tracker",
+    "desc": "High-volume web crawler tracking inventory drops, product catalogs, and price shifts across global sneaker retailers. Implements headless browser rendering, residential proxy pools, and rate-limiting evasion.",
+    "tags": [
+      "Scrapy",
+      "Playwright",
+      "Proxy Pools",
+      "Data Pipeline"
+    ],
+    "video": "ux-3.mp4",
+    "ar": "1280 / 800",
+    "poster": "ux-3.webp",
+    "bg": "#fff",
+    "fit": "cover",
+    "note": "Automated scraping daemon running across rotating proxies"
+  },
+  {
+    "kind": "FinTech Engine \u00b7 Live",
+    "title": "Zerodha Tax API",
+    "sub": "P&L computation engine \u00b7 pnl.page",
+    "desc": "High-speed trade log parser and capital gains calculation engine. Processes multi-year broker statements, FIFO tax matching, and schedule computation for tens of thousands of active traders.",
+    "tags": [
+      "Pandas",
+      "NumPy",
+      "FastAPI",
+      "Financial Data"
+    ],
+    "url": "https://pnl.page/brokers/zerodha",
+    "shot": "ux-pnl.webp"
+  }
+],
+  photos: [
+  {
+    "t": "p/01.webp",
+    "f": "p/01-full.webp",
+    "w": 1179,
+    "h": 1606,
+    "n": "A1",
+    "q": "data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAACQBQCdASoUABsAPu1or1AppaSiqAqpMB2JZwDM0BEyA7hwm+6giLFF6U5LhzePhj1fN6SXgAD+6/AYZikEPhCUhV1dxG6G+DGRRDdEz/8RIQDmpKpgYGbSGzVYHt4Zd30Zs+8s7eZjiIEi8ovPNBpKreiHakWmtryDEOXYi/DwUdApRlLn3KkkqaKcEaYxcuAAAA==",
+    "c": "Architecture"
+  },
+  {
+    "t": "p/02.webp",
+    "f": "p/02-full.webp",
+    "w": 1179,
+    "h": 730,
+    "n": "IMG_4053",
+    "q": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADwAwCdASoUAAwAPu1iqU2ppaOiMAgBMB2JZgCdMoR3AB6wdhhodhWAAP7r/fFEre4+wthK1GmrVQS2mCxs5zYzvbsjbtx7Tv3Hs/kjjAA=",
+    "c": "Concert"
+  },
+  {
+    "t": "p/03.webp",
+    "f": "p/03-full.webp",
+    "w": 1280,
+    "h": 1920,
+    "n": "cat1",
+    "q": "data:image/webp;base64,UklGRqwAAABXRUJQVlA4IKAAAABwBQCdASoUAB4APulipE2pJaMiMAwBIB0JQBibBDvfib4RtP2C+bnaSUHtAKUuxji/E0EAAP70I1CRmKhldgNsLZSzj4Tuj6q4z27R2zRnYTzLc54t5bbC1X9hgmfL7GwG1kov3hZhFOgpxqcAVc9hmU5JahGY3bqXmzDFN+XQ/+fsg31jgnZfENwAIcB13LDzHtUTn4tHtjt6AFPygAAA",
+    "c": "Nature"
+  },
+  {
+    "t": "p/04.webp",
+    "f": "p/04-full.webp",
+    "w": 1280,
+    "h": 720,
+    "n": "Pasted 06-10-2026 at 16.10.44",
+    "q": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAAAQBACdASoUAAsAPu1kqk4ppaQiMAgBMB2JYgC7MoAC/BG9u33FH/SWwAD+6e0CPkcVpnvdIxvhhVbqR9MWqNwGOAEEhEQKpaoaiq0MeS/MIX1miqVaGFRQFreGhdzUrqnDGdoAAAA=",
+    "c": "Product"
+  },
+  {
+    "t": "p/05.webp",
+    "f": "p/05-full.webp",
+    "w": 7008,
+    "h": 4672,
+    "n": "IMG_1375",
+    "q": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAAAwBACdASoUAA0APu1iqk2ppaQiMAgBMB2JQBbZBFa7z7xX9Md9OuRMYgAA/sAhMyAQZDIxZS+uOtAZPKtC+SPnUSC/6uUMOKo0gXldib4OPiXSknsw33hArPFTFCbPwAA=",
+    "c": "Sports"
+  },
+  {
+    "t": "p/06.webp",
+    "f": "p/06-full.webp",
+    "w": 1179,
+    "h": 2036,
+    "n": "A2",
+    "q": "data:image/webp;base64,UklGRqgAAABXRUJQVlA4IJwAAACwBQCdASoUACMAPu1ip02ppaOiKq35MB2JZwDJTBTAmSnVoi3lGwrGQLo0ouUrqHtn4PF7RgAA/tH0JVAJUgOwzY3+dv3irtEpEQS1hOPMaqqT/6kQ0/v5775iGCa7mFcg1FFH+FuIqu8+lh0nnWMEtiijxNf7w5/rcuH5trdkAANt0v6XRihsmvM9VB3/qd7j2IiK+ZkpThOAAAA=",
+    "c": "Architecture"
+  },
+  {
+    "t": "p/07.webp",
+    "f": "p/07-full.webp",
+    "w": 1179,
+    "h": 756,
+    "n": "IMG_4055",
+    "q": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAADQAwCdASoUAA0APu1iqU2ppaOiMAgBMB2JYgCdLwABnV7S2+iAvgAA/u6o/nzq23a7O9AC3bkTreJ7Mzb3UyVSlga9SnfPr5d+/VVIjD++QT99iNvdzBHuNKWwiAAA",
+    "c": "Concert"
+  },
+  {
+    "t": "p/08.webp",
+    "f": "p/08-full.webp",
+    "w": 1280,
+    "h": 1920,
+    "n": "cat2",
+    "q": "data:image/webp;base64,UklGRqgAAABXRUJQVlA4IJwAAAAwBQCdASoUAB4APu1krFAppSQisBgIATAdiWYAt7gNFUpE3CRcTxJZGSAr7i6CPKZ/jAD+5jo7H5XKiyLkfmENm3CuT2DLtrhH9WpsaZdR1ESQJ/VPBwQqGG6TN2Zt68zf0wje7tCMhYdofNmNJiAh9YJg42l0rslbfWALcHI7eN+5qAcIciwzlWcC46rqA9IwiBQOjbstJQjgAAA=",
+    "c": "Nature"
+  },
+  {
+    "t": "p/09.webp",
+    "f": "p/09-full.webp",
+    "w": 1280,
+    "h": 720,
+    "n": "Pasted 06-10-2026 at 16.10.55",
+    "q": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAwCdASoUAAsAPu1oqk6ppiQiMAgBMB2JQBOj+DE/wHkE3GboW4DAAP7p/s/xfJ+rM3DxMHBRyYaB1Kbp2+qP9hLE+GymRweW9nBGD4TAqW46No6eBh38GAA=",
+    "c": "Product"
+  },
+  {
+    "t": "p/10.webp",
+    "f": "p/10-full.webp",
+    "w": 1179,
+    "h": 765,
+    "n": "IMG_4059",
+    "q": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAACQAwCdASoUAA0APu1iqk4ppaQiMAgBMB2JQBWAAg2sN73RimiAAPwvP8T5bqBcgOP9fSzz2/7b2xDvjKJeTg030CyyNOTnNO6UAmpAPo57fvqUAAA=",
+    "c": "Sports"
+  },
+  {
+    "t": "p/11.webp",
+    "f": "p/11-full.webp",
+    "w": 1094,
+    "h": 1872,
+    "n": "A4",
+    "q": "data:image/webp;base64,UklGRsAAAABXRUJQVlA4ILQAAABwBgCdASoUACIAPu1qrlKppaQiqrgIATAdiWcAyUwiqhAafzQ0SfaPY9C6U0cfJv+nCVZjisAD+CRhHogA/ucebva5Fvs2MCECYzoM/JhwQ1x3A776OX67WRFluzLujXbaS3yDtm07w4Psj/I7zsp8KCmXxC0fvPFn5VmLvZKoFWIdyL2ey2mnt5jwDQBPVj6v9BoO5KKPKlvFNGwYQnHghVf9ndAKLULRPr25tqMDI0yUAAA=",
+    "c": "Architecture"
+  },
+  {
+    "t": "p/12.webp",
+    "f": "p/12-full.webp",
+    "w": 1179,
+    "h": 750,
+    "n": "IMG_4056",
+    "q": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAABQAwCdASoUAA0APu1iqU2ppaOiMAgBMB2JagAAUp7MWyapIAD+8RkYv9vDrDGs3k5N9P4kg9Avh1iwcH/m3uxvHScNZMF7bd9iJPn9Px0xRKy9q9fvddf1kAA=",
+    "c": "Concert"
+  },
+  {
+    "t": "p/13.webp",
+    "f": "p/13-full.webp",
+    "w": 1280,
+    "h": 1920,
+    "n": "cat3",
+    "q": "data:image/webp;base64,UklGRrwAAABXRUJQVlA4ILAAAACwBQCdASoUAB4APu1sq08ppiOiMBgIATAdiUAVgLWIG3FvqNmNcPAcA9e/DCZ3yhSz2nKPs3gA/vEgq/Q8AImF4DG4xMKX0HIaRcqG8gri56vmQhzeU9YMZaRpmEMGIhE0T3P3NA3VXA5g2IO1YBXa4EiUDERz8pkXW5Sqf+9DMFMK+J5DoBW7YtOmnUF7ICmuAW+J9af+zGxgnR/8hgghn2fkER2TUSuiS9wdm3AAAA==",
+    "c": "Nature"
+  },
+  {
+    "t": "p/14.webp",
+    "f": "p/14-full.webp",
+    "w": 1280,
+    "h": 831,
+    "n": "click1",
+    "q": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAACQAwCdASoUAA0APu1iqU2ppaOiMAgBMB2JR3AAAl6jfGawOkUAAP7s2bRKBf+o2iJFY2ZZH+8ctbUMCT882/peiLpuInBiwUA45NE5sugAAA==",
+    "c": "Product"
+  },
+  {
+    "t": "p/15.webp",
+    "f": "p/15-full.webp",
+    "w": 1179,
+    "h": 758,
+    "n": "IMG_4060",
+    "q": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAAAwAwCdASoUAA0APu1iqU2ppaQiMAgBMB2JQBdgBZt0bmCYAP7h22ozvaWCdL0wizyE6KMS03aRq9uCRXTEN8z1xxDWSgAA",
+    "c": "Sports"
+  },
+  {
+    "t": "p/16.webp",
+    "f": "p/16-full.webp",
+    "w": 1145,
+    "h": 2002,
+    "n": "A5",
+    "q": "data:image/webp;base64,UklGRsgAAABXRUJQVlA4ILwAAACQBgCdASoUACMAPu1urlIppiQiqrgIATAdiWMAyJghn6AJryXpSUWOVh5pNYO9ryj8MX32QW61v91ynyYAAPzGZm27SMiRcTaRlcO/F7mmNzL86WTNnpb2TBWzLGWnOhxJW914Q8Sxk7e9VTCcibHoNhtdDQu/t+VCI9bGgfqxM53pbZiriQLdiNek7YVEHJkdzMqYxwODIiIN6DHFHtiHf9vf35kxh6fRt8jwhdcJWkeQcfaAQyJ9EhlYAA==",
+    "c": "Architecture"
+  },
+  {
+    "t": "p/17.webp",
+    "f": "p/17-full.webp",
+    "w": 1179,
+    "h": 774,
+    "n": "IMG_4058",
+    "q": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAACwBACdASoUAA0APu1iqU2ppaOiMAgBMB2JYgCsO//OEGABMX+xb5yhpWpY5WZAAP7w36pUdseyf42fEgfU19tHoo1aCH+GWmfX2TcGRA2fjhv/d+2cHPIDPfzYBVaZ1EC2hwZbqaHRaqKgArty/EAA",
+    "c": "Concert"
+  },
+  {
+    "t": "p/18.webp",
+    "f": "p/18-full.webp",
+    "w": 1280,
+    "h": 1920,
+    "n": "cat4",
+    "q": "data:image/webp;base64,UklGRqwAAABXRUJQVlA4IKAAAACwBQCdASoUAB4APu1qrE8ppiQiMBgIATAdiWMArhwyy3+zpvxGxqssr9U5FdBWGl6YYypO1KAA/vaT0BT4WCQ+V/YRdvVQsEc/kaIwYiopFvOsKlNcuJB+nEteRWVRtXVoY91YrnOQ6IJkxAiIpJniHPGjkmgU9N2g3sWZypA6fUJPqdO27OhYCxPMtu/GzGO4DFFtVMgDG1UW4BGSAAAA",
+    "c": "Nature"
+  },
+  {
+    "t": "p/19.webp",
+    "f": "p/19-full.webp",
+    "w": 1179,
+    "h": 769,
+    "n": "IMG_4063",
+    "q": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAwAwCdASoUAA0APu1iqk4ppaQiMAgBMB2JYgAAidpgbUBAAP7pDrf5dqXeOdY2lTv4+lIOBo/+qqWy7KXLx6Ga79eD/7zrDgGIaYgVhwAAAA==",
+    "c": "Sports"
+  },
+  {
+    "t": "p/20.webp",
+    "f": "p/20-full.webp",
+    "w": 1179,
+    "h": 1920,
+    "n": "A6",
+    "q": "data:image/webp;base64,UklGRrAAAABXRUJQVlA4IKQAAAAQBgCdASoUACEAPu1urlIppiQiqrgIATAdiWcAzBwEmvuKTEL5+BZehS5fFHSLjZ9gWyo/G6fvzQAAzIzDLS7NsSpanj1DX7ljkgWfOPz8pb+dvjFTBL9KhErxg01Q5r9u/QBT+kUDC94Q49Gh+WAzRnld3SU0gQ4DVd+5vtg7/pNIwUJOaJk0AF1rVqaVaBxm78wKARkjNzC3EN4YqopfUrIgAA==",
+    "c": "Architecture"
+  },
+  {
+    "t": "p/21.webp",
+    "f": "p/21-full.webp",
+    "w": 1039,
+    "h": 727,
+    "n": "IMG_4062",
+    "q": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADQAwCdASoUAA4APu1iqU2ppaQiMAgBMB2JQBOgA+YeYfgmCQR/hwAA/u8SInXkqJSjtfrt6f+0GypAGU9jo1OdsXMwsgmwJW/czossA1hTfQzZ7SPppwIuiFnpJWpILCG2AAAA",
+    "c": "Concert"
+  },
+  {
+    "t": "p/22.webp",
+    "f": "p/22-full.webp",
+    "w": 1280,
+    "h": 831,
+    "n": "click2",
+    "q": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAADQAwCdASoUAA0APu1iqU2ppaOiMAgBMB2JYgCdMoC4AAwn79cmxwAA/tCQYOv94Uyc7wlhcIJzgFvKpZ6PsF6Lojj+C/dIY8mSkQ1Jcjsntvc9ODpiLbFsIwT1iterv2o1h7R6UpQTYAAA",
+    "c": "Nature"
+  },
+  {
+    "t": "p/23.webp",
+    "f": "p/23-full.webp",
+    "w": 1129,
+    "h": 1453,
+    "n": "IMG_4064",
+    "q": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAABwBACdASoUABoAPu1gp02ppSOiMAgBMB2JZQDH5CHgSoIG02pciTrcMPlfQAD+9CtbVr2zs6AvO8Fr9Xk36E2PmjI8V0IEvFK+A7trQB36SBzGLyQy62MvnVbwN0ey/FduYWe9p6TyFgAA",
+    "c": "Sports"
+  },
+  {
+    "t": "p/24.webp",
+    "f": "p/24-full.webp",
+    "w": 1179,
+    "h": 2051,
+    "n": "AAAA",
+    "q": "data:image/webp;base64,UklGRqoAAABXRUJQVlA4IJ4AAADQBQCdASoUACMAPu1opk4ppiMiKq35MB2JZwDP3BDsPTL5dEDXOcPkWNHoXRQc8zuoFaEmycaAAP4yxU5U52slWH2wwcfMgxssOh4//wQwXbw3Wvpf3NFUwdeDt+W8gga5GDhcZbZsJxOTyrgh3MNRX3M3BXVrNCauwpoIaMRwkvxQJCEgnioDRmDOU2FoYQaY1ArdioBTIIKUOwAAAA==",
+    "c": "Architecture"
+  },
+  {
+    "t": "p/25.webp",
+    "f": "p/25-full.webp",
+    "w": 1179,
+    "h": 765,
+    "n": "IMG_4065",
+    "q": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAADQAwCdASoUAA0APu1iqU2ppaOiMAgBMB2JbACdMoACD5zElUYUUYAA/vK0gVVwDwBIPz0kS0Sqr8CfQZCmnmnGOnGZtDh9Sc8/ns+6fuwrQpvbjEzTu5Df0WQbLD8QYWke5m9PdkUv1TBeZeDNsI8ztqAAAA==",
+    "c": "Concert"
+  },
+  {
+    "t": "p/26.webp",
+    "f": "p/26-full.webp",
+    "w": 1096,
+    "h": 623,
+    "n": "IMG_4066",
+    "q": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAABQAwCdASoUAAsAPu1kqk4ppaQiMAgBMB2JbAAAK6YpFj/dMAD+wG0wYSnI0AzorO3Rr+R+zj51GzB6XRz//W+PFwQ/v7FbuvmLgRzeA6H+x8cWy/L8C2xJ3A7Pupqf5CH67vbn2OpsAAAA",
+    "c": "Concert"
+  },
+  {
+    "t": "p/27.webp",
+    "f": "p/27-full.webp",
+    "w": 1179,
+    "h": 1998,
+    "n": "IMG_4070",
+    "q": "data:image/webp;base64,UklGRrAAAABXRUJQVlA4IKQAAADQBQCdASoUACIAPu1qrVCppaQipWzJMB2JQAATvT6UpkSQP0b5pOtWQea395jrnGzMpb0uogoAAP75EO6NI2lGtMw7Miq2e1TxGspSm9hLevlZKYeWrlvR6n2A70dD7e0mDpFESUIzp654RZRbAbpH45L89YZklP+xwCW+rzAxHaSepZury6kjSuPQ0xLkLg5/7AJEJgh8bk7gOpflhqSYb+LAAA==",
+    "c": "Concert"
+  },
+  {
+    "t": "p/28.webp",
+    "f": "p/28-full.webp",
+    "w": 2160,
+    "h": 3840,
+    "n": "IMG_9464",
+    "q": "data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAACQBQCdASoUACQAPu1cpU2ppKMiMBqtUTAdiWIAtRuX4AwBAFqBNlKDjOpiuZF0wd26peaaAAD+qqwukHz9zMq7b/04WKU/z94IEpmRwbGiB/phHzWRBS78VtCgXFUW/DI8Fz4537C6kAIwk7DwxoLmpw/8OMKjgoTA2Dywf3qTbkiwC5cvy4bCSKqk+nt/RLpOumsLd977PEgS1nGy8OfXufTfjJAA",
+    "c": "Concert"
+  }
+],
+  friends: [
+  {
+    "name": "Ronali Jena",
+    "role": "Full-Stack Developer",
+    "bio": "Building high-throughput web systems, microservices, and modern UI architectures.",
+    "image": "components/ronali-jena.jpg",
+    "portfolio": "https://github.com/ronalijena06",
+    "socials": {
+      "github": "https://github.com/ronalijena06",
+      "linkedin": "https://www.linkedin.com/in/ronali-jena-6a4486339",
+      "instagram": "https://www.instagram.com/hey__ruhhhh"
+    }
+  },
+  {
+    "name": "Raghab Barik",
+    "role": "Product Designer & Developer",
+    "bio": "Build a product, not just a website. Designing clean interfaces & modern web apps.",
+    "image": "components/raghab-barik.jpg",
+    "portfolio": "https://raghabportfolio.in",
+    "socials": {
+      "github": "https://github.com/Raghabbarik",
+      "linkedin": "https://www.linkedin.com/in/raghabbarik/",
+      "instagram": "https://www.instagram.com/mr_raghab_786"
+    }
+  },
+  {
+    "name": "Prabin Jena",
+    "role": "Software & Web Developer",
+    "bio": "Crafting modern web applications, scalable backends, and responsive interfaces.",
+    "image": "components/prabin-jena.jpg",
+    "portfolio": "https://prabin-jena.github.io/Portfolio/",
+    "socials": {
+      "github": "https://github.com/Prabin-Jena",
+      "linkedin": "https://www.linkedin.com/in/prabin-jena-678668324",
+      "instagram": "https://www.instagram.com/prabin__j?dlrf=cTJqeXk5ejFnMDQ0"
+    }
+  },
+  {
+    "name": "Sandeep Patra",
+    "role": "AI & ML Researcher",
+    "bio": "Passionate about computer vision, deep generative models, and LLM fine-tuning.",
+    "image": "components/sandeep-patra.jpg",
+    "portfolio": "https://www.instagram.com/sandy.noct?xtok=MXY0MGV0bnRkZzU1cA==",
+    "socials": {
+      "instagram": "https://www.instagram.com/sandy.noct?xtok=MXY0MGV0bnRkZzU1cA=="
+    }
+  },
+  {
+    "name": "Dipu Gochayat",
+    "role": "Software Developer & Backend Engineer",
+    "bio": "Passionate about Java development, backend engineering, and cloud systems.",
+    "image": "components/dipu-gochayat.jpg",
+    "portfolio": "https://dipu-portfolio-hazel.vercel.app/",
+    "socials": {
+      "github": "https://github.com/dipu-gochhayat",
+      "linkedin": "https://www.linkedin.com/in/dipu-gochhayat",
+      "instagram": "https://www.instagram.com/mr_dipu.g"
+    }
+  },
+  {
+    "name": "Kiran Singh",
+    "role": "Software Engineer",
+    "bio": "Focused on algorithmic problem solving, distributed systems, and low-latency backends.",
+    "image": "components/kiran-singh.jpg",
+    "portfolio": "https://github.com",
+    "socials": {
+      "github": "https://github.com",
+      "linkedin": "https://linkedin.com",
+      "instagram": "https://instagram.com"
+    }
+  },
+  {
+    "name": "Priyanka Sahoo",
+    "role": "Data Scientist & Analytics",
+    "bio": "Turning raw numbers into actionable predictive intelligence and visual storytelling.",
+    "image": "components/priyanka-sahoo.jpg",
+    "portfolio": "https://github.com/priyankasahoo15",
+    "socials": {
+      "github": "https://github.com/priyankasahoo15",
+      "linkedin": "https://www.linkedin.com/in/priyanka-priyadarsani-sahoo-791b62396",
+      "instagram": "https://www.instagram.com/priyankaps602?cplk=dHIzZXEwMnp4NHl5"
+    }
+  }
+],
+  tech: [
+  {
+    "title": "Python",
+    "href": "https://www.python.org",
+    "hoverColor": "#3776AB"
+  },
+  {
+    "title": "React",
+    "href": "https://react.dev",
+    "hoverColor": "#61DAFB"
+  },
+  {
+    "title": "TypeScript",
+    "href": "https://www.typescriptlang.org",
+    "hoverColor": "#3178C6"
+  },
+  {
+    "title": "Next.js",
+    "href": "https://nextjs.org",
+    "hoverColor": "#ffffff"
+  },
+  {
+    "title": "PyTorch",
+    "href": "https://pytorch.org",
+    "hoverColor": "#EE4C2C"
+  },
+  {
+    "title": "TensorFlow",
+    "href": "https://www.tensorflow.org",
+    "hoverColor": "#FF6F00"
+  },
+  {
+    "title": "Tailwind CSS",
+    "href": "https://tailwindcss.com",
+    "hoverColor": "#38BDF8"
+  },
+  {
+    "title": "Node.js",
+    "href": "https://nodejs.org",
+    "hoverColor": "#5FA04E"
+  },
+  {
+    "title": "FastAPI",
+    "href": "https://fastapi.tiangolo.com",
+    "hoverColor": "#009688"
+  },
+  {
+    "title": "Docker",
+    "href": "https://www.docker.com",
+    "hoverColor": "#2496ED"
+  },
+  {
+    "title": "PostgreSQL",
+    "href": "https://www.postgresql.org",
+    "hoverColor": "#4169E1"
+  },
+  {
+    "title": "Git",
+    "href": "https://git-scm.com",
+    "hoverColor": "#F05032"
+  },
+  {
+    "title": "Figma",
+    "href": "https://www.figma.com",
+    "hoverColor": "#F24E1E"
+  },
+  {
+    "title": "JavaScript",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+    "hoverColor": "#F7DF1E"
+  }
+]
+};
+
+// Keys used in localStorage and Supabase
+export const STORAGE_PREFIX = 'portfolio_data_';
+export const CONFIG_KEY = 'portfolio_supabase_config';
+export const AUTH_PASSCODE_KEY = 'portfolio_admin_passcode';
+export const DEFAULT_PASSCODE = 'admin123';
+
+class PortfolioDataStore {
+  constructor() {
+    this.supabase = null;
+    this.supabaseConfig = this.loadSupabaseConfig();
+    this.initSupabaseClient();
+  }
+
+  loadSupabaseConfig() {
+    try {
+      const raw = localStorage.getItem(CONFIG_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return { url: '', key: '', active: false };
+  }
+
+  saveSupabaseConfig(url, key) {
+    this.supabaseConfig = {
+      url: (url || '').trim(),
+      key: (key || '').trim(),
+      active: Boolean(url && key)
+    };
+    try {
+      localStorage.setItem(CONFIG_KEY, JSON.stringify(this.supabaseConfig));
+    } catch (e) {}
+    this.initSupabaseClient();
+    return this.supabaseConfig;
+  }
+
+  initSupabaseClient() {
+    if (this.supabaseConfig.active && window.supabase && window.supabase.createClient) {
+      try {
+        this.supabase = window.supabase.createClient(this.supabaseConfig.url, this.supabaseConfig.key);
+      } catch (e) {
+        console.warn('Failed to initialize Supabase client:', e);
+        this.supabase = null;
+      }
+    } else {
+      this.supabase = null;
+    }
+  }
+
+  isSupabaseConfigured() {
+    return Boolean(this.supabaseConfig && this.supabaseConfig.active && this.supabase);
+  }
+
+  async testConnection() {
+    if (!this.supabaseConfig.url || !this.supabaseConfig.key) {
+      return { success: false, message: 'Supabase URL and Anon Key are required.' };
+    }
+    try {
+      // Try to read from portfolio_store or portfolio_profile
+      if (!this.supabase && window.supabase) {
+        this.supabase = window.supabase.createClient(this.supabaseConfig.url, this.supabaseConfig.key);
+      }
+      if (!this.supabase) {
+        return { success: false, message: 'Supabase JS library not loaded.' };
+      }
+      const { data, error } = await this.supabase
+        .from('portfolio_store')
+        .select('key')
+        .limit(1);
+
+      if (error && error.code === '42P01') {
+        // Table doesn't exist yet, but connection was made!
+        return { success: true, warning: true, message: 'Connected to Supabase! (Note: Tables not created yet. Run the SQL schema script in your Supabase SQL Editor).' };
+      }
+      if (error) throw error;
+      return { success: true, message: 'Successfully connected to Supabase database!' };
+    } catch (e) {
+      return { success: false, message: e.message || 'Connection failed' };
+    }
+  }
+
+  async getCollection(name) {
+    // 1. Try Supabase if configured
+    if (this.isSupabaseConfigured()) {
+      try {
+        const { data, error } = await this.supabase
+          .from('portfolio_store')
+          .select('data')
+          .eq('key', name)
+          .maybeSingle();
+
+        if (!error && data && data.data) {
+          return data.data;
+        }
+      } catch (e) {
+        console.warn(`Supabase fetch failed for ${name}, falling back to local:`, e);
+      }
+    }
+
+    // 2. Try LocalStorage
+    try {
+      const local = localStorage.getItem(STORAGE_PREFIX + name);
+      if (local) {
+        return JSON.parse(local);
+      }
+    } catch (e) {}
+
+    // 3. Fallback to default bundled data
+    return DEFAULT_DATA[name] || null;
+  }
+
+  async saveCollection(name, data) {
+    // 1. Save to LocalStorage immediately for instant local persistence
+    try {
+      localStorage.setItem(STORAGE_PREFIX + name, JSON.stringify(data));
+    } catch (e) {
+      console.warn('LocalStorage save failed:', e);
+    }
+
+    // 2. Save to Supabase if connected
+    if (this.isSupabaseConfigured()) {
+      try {
+        const { error } = await this.supabase
+          .from('portfolio_store')
+          .upsert({
+            key: name,
+            data: data,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'key' });
+
+        if (error) throw error;
+      } catch (e) {
+        console.error(`Supabase save failed for ${name}:`, e);
+        throw e;
+      }
+    }
+    return true;
+  }
+
+  async syncAllToSupabase() {
+    if (!this.isSupabaseConfigured()) {
+      throw new Error('Supabase is not configured yet. Please enter your Supabase URL & Anon Key.');
+    }
+    const collections = ['profile', 'web_projects', 'ai_projects', 'python_projects', 'photos', 'friends', 'tech'];
+    const results = {};
+    for (const c of collections) {
+      const currentData = await this.getCollection(c);
+      const { error } = await this.supabase
+        .from('portfolio_store')
+        .upsert({
+          key: c,
+          data: currentData,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'key' });
+      if (error) throw error;
+      results[c] = true;
+    }
+    return results;
+  }
+
+  async pullAllFromSupabase() {
+    if (!this.isSupabaseConfigured()) {
+      throw new Error('Supabase is not configured yet.');
+    }
+    const { data, error } = await this.supabase
+      .from('portfolio_store')
+      .select('key, data');
+    if (error) throw error;
+    if (data && Array.isArray(data)) {
+      for (const item of data) {
+        if (item.key && item.data) {
+          localStorage.setItem(STORAGE_PREFIX + item.key, JSON.stringify(item.data));
+        }
+      }
+    }
+    return true;
+  }
+
+  resetToDefaults() {
+    const collections = ['profile', 'web_projects', 'ai_projects', 'python_projects', 'photos', 'friends', 'tech'];
+    for (const c of collections) {
+      try {
+        localStorage.removeItem(STORAGE_PREFIX + c);
+      } catch (e) {}
+    }
+  }
+
+  // Passcode verification
+  getPasscode() {
+    try {
+      return localStorage.getItem(AUTH_PASSCODE_KEY) || DEFAULT_PASSCODE;
+    } catch (e) {
+      return DEFAULT_PASSCODE;
+    }
+  }
+
+  setPasscode(newCode) {
+    if (!newCode || newCode.length < 4) throw new Error('Passcode must be at least 4 characters');
+    localStorage.setItem(AUTH_PASSCODE_KEY, newCode);
+    return true;
+  }
+}
+
+export const dataStore = new PortfolioDataStore();
+if (typeof window !== 'undefined') {
+  window.portfolioDataStore = dataStore;
+}

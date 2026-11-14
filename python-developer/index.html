@@ -595,13 +595,17 @@ html[data-mode="dark"] .skel::after{background-image:linear-gradient(100deg,#231
 <button class="totop" data-nav="top" aria-label="Back to top"><svg class="ring" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/></svg><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg><span class="lbl">Back to top</span></button>
 
 <script>
-const PROJECTS = [
+let PROJECTS = [
   {"kind": "FastAPI & AsyncPG", "title": "Cliq Core API", "sub": "Affiliate tracking · high-concurrency microservice", "desc": "A high-throughput backend handling millions of conversion webhooks and click tracking events. Features asynchronous ledger calculations, real-time fraud mitigation, and multi-tenant isolation built with FastAPI, Redis, and PostgreSQL.", "tags": ["FastAPI", "PostgreSQL", "Redis & Celery", "Docker"], "video": "ux-cliq.mp4", "ar": "1280 / 800", "poster": "ux-cliq.webp", "bg": "#fff", "fit": "cover", "note": "Production telemetry running across distributed multi-tenant nodes"},
   {"kind": "Django & GraphQL", "title": "Prime Engine", "sub": "Distributed booking engine · transactional backend", "desc": "Scalable reservation backend handling room availability searches, distributed atomic room locks via Redis, Stripe payment webhooks, and automated PDF invoice generation with Celery queues.", "tags": ["Django", "GraphQL", "Redis Locks", "Celery"], "video": "ux-1.mp4", "ar": "1280 / 800", "poster": "ux-1.webp", "bg": "#000", "fit": "cover", "note": "Interactive reservation pipeline and GraphQL explorer"},
   {"kind": "AsyncIO & RabbitMQ", "title": "WeBuild Queue", "sub": "AI task orchestration · event-driven pipeline", "desc": "Distributed event-driven worker framework orchestrating asynchronous LLM inference, dynamic prompt pipelines, streaming Server-Sent Events (SSE), and fault-tolerant retry workflows.", "tags": ["Python AsyncIO", "RabbitMQ", "SSE Streaming", "Pytest"], "video": "ux-2.mp4", "ar": "1280 / 800", "poster": "ux-2.webp", "bg": "#12082a", "fit": "cover", "note": "Real-time worker daemon and asynchronous event queues"},
   {"kind": "Scrapy & Playwright", "title": "Jordan Scraper", "sub": "Automated inventory crawler & price tracker", "desc": "High-volume web crawler tracking inventory drops, product catalogs, and price shifts across global sneaker retailers. Implements headless browser rendering, residential proxy pools, and rate-limiting evasion.", "tags": ["Scrapy", "Playwright", "Proxy Pools", "Data Pipeline"], "video": "ux-3.mp4", "ar": "1280 / 800", "poster": "ux-3.webp", "bg": "#fff", "fit": "cover", "note": "Automated scraping daemon running across rotating proxies"},
   {"kind": "FinTech Engine · Live", "title": "Zerodha Tax API", "sub": "P&L computation engine · pnl.page", "desc": "High-speed trade log parser and capital gains calculation engine. Processes multi-year broker statements, FIFO tax matching, and schedule computation for tens of thousands of active traders.", "tags": ["Pandas", "NumPy", "FastAPI", "Financial Data"], "url": "https://pnl.page/brokers/zerodha", "shot": "ux-pnl.webp"}
 ];
+try {
+  const _savedPy = localStorage.getItem('portfolio_data_python_projects');
+  if (_savedPy) PROJECTS = JSON.parse(_savedPy);
+} catch (e) {}
 const ARROW = '<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>';
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const stack = document.getElementById('stack');

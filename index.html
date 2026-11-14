@@ -1486,6 +1486,17 @@ if(m<=2||c<=2||s)document.documentElement.classList.add('lite');})();
               <svg class="sf__s-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
             </a>
           </li>
+          <li>
+            <a href="admin/" class="sf__social-link" aria-label="Admin Dashboard" title="Manage site data">
+              <span class="sf__s-main">
+                <span class="sf__s-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                </span>
+                <span>Admin</span>
+              </span>
+              <svg class="sf__s-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -3212,6 +3223,37 @@ try {
       }
     });
   }
+</script>
+<script type="module">
+  // Dynamic profile updates from Admin / Supabase
+  try {
+    const prof = JSON.parse(localStorage.getItem('portfolio_data_profile') || 'null');
+    if (prof) {
+      if (prof.greeting) {
+        const g = document.querySelector('.line span');
+        if (g) g.textContent = prof.greeting;
+      }
+      if (prof.bio) {
+        const b = document.querySelector('.card__desc, .desc');
+        if (b) b.textContent = prof.bio;
+      }
+      if (prof.email) {
+        document.querySelectorAll('a[data-mail], a[href^="mailto:"]').forEach(a => a.href = 'mailto:' + prof.email);
+      }
+      if (prof.github) {
+        document.querySelectorAll('a[href*="github.com/pabitralenka"]').forEach(a => a.href = prof.github);
+      }
+      if (prof.linkedin) {
+        document.querySelectorAll('a[href*="linkedin.com"]').forEach(a => a.href = prof.linkedin);
+      }
+      if (prof.twitter) {
+        document.querySelectorAll('a[href*="x.com"]').forEach(a => a.href = prof.twitter);
+      }
+      if (prof.instagram) {
+        document.querySelectorAll('a[href*="instagram.com"]').forEach(a => a.href = prof.instagram);
+      }
+    }
+  } catch (e) {}
 </script>
 </body>
 </html>
